@@ -1,2 +1,7 @@
 last_sent_lines/
 .talismanrc
+logfile.txt
+.token
+
+*.log
+*.csv

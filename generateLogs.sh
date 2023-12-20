@@ -1,9 +1,12 @@
 #!/bin/bash
 
-source_log="Linux_2k.log"
+source_log="Hadoop_2k.log"
 destination_log="logfile.txt"
 
+rm "$destination_log"
 touch "$destination_log"
+
+# rm -r last_sent_lines/
 
 interval=1
 

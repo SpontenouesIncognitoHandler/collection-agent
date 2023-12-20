@@ -5,10 +5,17 @@ log_files=(
     #...
 )
 
-server_url=""
+server_url="https://e74a-14-139-208-67.ngrok-free.app/api/log/"
 marker_directory="last_sent_lines"
-threshold=10
+threshold=30
 collection_interval=1
+
+if [ -f ".token" ]; then
+        cat .token
+    else
+        ./getAuthToken.sh 
+fi
+auth_token=$(cat .token)
 
 function get_last_sent_line {
     local log_file=$1
@@ -51,9 +58,23 @@ function send_logs_to_server {
         if [ "$new_logs_count" -ge "$threshold" ]; then
             local new_logs
             new_logs=$(tail -n +"$((last_sent_line + 1))" "$log_file")
+            # escaped_logs=$(echo "$new_logs" | jq -s -R -r @uri)
+            logs_bytes=$logs_bytes=$(echo -n "$new_logs" | jq -s -R -r @base64)
+
+            echo "$log_bytes"
 
             if [ -n "$new_logs" ]; then
-                # curl -X POST -d "$new_logs" "$server_url"
+                curl -X POST \
+                -H "Content-Type: application/json" \
+                -H "Authorization: Bearer ${auth_token}" \
+                -d '{
+                "agent_id": "12qkas",
+                "org_id": "qqnka123",
+                "logs": "'"$logs_bytes"'",
+                "type": "linux"
+                }' \
+                "$server_url"
+
                 
                 if [ $? -eq 0 ]; then
                     echo "Logs from '$log_file' sent successfully"
