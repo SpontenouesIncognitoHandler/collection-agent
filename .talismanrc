@@ -1,0 +1,10 @@
+fileignoreconfig:
+- filename: Linux_2k.log
+  checksum: fcbc5f471dc6a7526f8d9c3077f9164b19ed7bb3385741fce4a70a856f27845b
+- filename: getAuthToken.sh
+  checksum: 834194c836fa114f912c725b0a4d95456266fd68b845d8d6c0ac0aaabc079e10
+- filename: decrypt.py
+  checksum: 2511591fccc7780cc7daf5051df8d453919fb184a3a4d253520467a0c15f99eb
+- filename: encrypt.py
+  checksum: 7a9b606b837e44f8de2b0168c05a55fb16394ff34ebb0ca40ddd9b05064cf608
+version: ""

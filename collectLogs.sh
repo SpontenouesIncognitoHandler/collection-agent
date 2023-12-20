@@ -2,7 +2,6 @@
 
 log_files=(
     "logfile.txt"
-    #...
 )
 
 server_url="https://e74a-14-139-208-67.ngrok-free.app/api/log/"
@@ -61,7 +60,16 @@ function send_logs_to_server {
             # escaped_logs=$(echo "$new_logs" | jq -s -R -r @uri)
             logs_bytes=$logs_bytes=$(echo -n "$new_logs" | jq -s -R -r @base64)
 
-            echo "$log_bytes"
+            encrypted_logs=$(python encrypt.py '"'"$log_bytes"'"')
+
+            # echo "$log_bytes"
+
+            echo "$encrypted_logs"
+
+            # escaped_logs=$(echo "$encrypted_logs" | jq -s -R -r @uri)
+            encrypted_b64_logs=$(echo "$encrypted_logs" | jq -s -R -r @base64)
+            echo "$encrypted_b64_logs"
+
 
             if [ -n "$new_logs" ]; then
                 curl -X POST \
@@ -70,7 +78,7 @@ function send_logs_to_server {
                 -d '{
                 "agent_id": "12qkas",
                 "org_id": "qqnka123",
-                "logs": "'"$logs_bytes"'",
+                "logs": "'"$encrypted_b64_logs"'",
                 "type": "linux"
                 }' \
                 "$server_url"
